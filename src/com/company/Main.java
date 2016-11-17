@@ -10,6 +10,10 @@ public class Main {
         final int XAXISMAX = 10;
         final int YAXISMIN = -10;
         final int YAXISMAX = 10;
+        //assume max number of tickets for each event is 20
+        final int MAXNUMBEROFTICKETS = 20;
+        //assume max price of each ticket is 50 dollars
+        final int MAXTICKETPRICE = 50;
 
         Scanner sc;
         Boolean isRunning = true;
@@ -20,8 +24,10 @@ public class Main {
         int yAxisRange = YAXISMAX - YAXISMIN + 1;
         //worldSize stores the unique numeric identifier for each event
         int[][] worldSize = new int[xAxisRange][yAxisRange];
-        //eventDetails stores event data on number of tickets and individual ticket prices
-        ArrayList[][] eventDetails;
+        //numberOfTickets stores the number of tickets for each event
+        ArrayList<Integer> numberOfTickets = new ArrayList<Integer>();
+        //ticketPrices stores individual ticket prices for each event
+        ArrayList<ArrayList<Double>> allEventsTicketPrices = new ArrayList<ArrayList<Double>>();
         int numberOfEvents = 0;
         Boolean isEvent;
         Random rd = new Random();
@@ -39,9 +45,23 @@ public class Main {
             }
         }
 
-        //assume max tickets for each event is 100
+        //generates number of tickets and individual ticket prices for each event
+        for(int i=0;i<numberOfEvents;i++){
+            numberOfTickets.add(rd.nextInt(MAXNUMBEROFTICKETS));
+            ArrayList<Double> ticketPrices = new ArrayList<Double>();
+
+            for(int j=0;j<numberOfTickets.get(i);j++){
+                //generates a random int in a 100 times larger range then divide by 100 to obtain ticket price with 2 decimal points
+                //ensures that generated ticket is at least 1 cent
+                int temp = rd.nextInt(MAXTICKETPRICE*100) + 1;
+                ticketPrices.add((double)temp/100);
+            }
+            allEventsTicketPrices.add(ticketPrices);
+        }
+
+        //assume max tickets for each event is 20
         //assume each coordinate can hold a maximum of one event
-        //assume max price of each ticket is 100 dollars
+        //assume max price of each ticket is 50 dollars
         //assume probability of each event occurring at each coordinate is 50%.
 
         while(isRunning) {
