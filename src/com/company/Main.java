@@ -13,6 +13,7 @@ public class Main {
             int xCoordinate = sc.nextInt();
         }catch (Exception e) {
             e.printStackTrace(System.err);
+            System.out.println("Invalid input");
         }
     }
 }
