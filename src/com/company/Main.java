@@ -79,7 +79,7 @@ public class Main {
                 while(numberOfFoundEvents < NUMBEROFCLOSESTEVENTS){
                     int currentListSize = listOfNodes.size();
                     for(int i=0;i<currentListSize;i++){
-                        numberOfFoundEvents += SearchNeighbours(world,listOfNodes,inputXCoordinate,inputYCoordinate,listOfNodes.get(i).getXIndex(),listOfNodes.get(i).getYIndex(),xAxisRange,yAxisRange);
+                        SearchNeighbours(world,listOfNodes,inputXCoordinate,inputYCoordinate,listOfNodes.get(i).getXIndex(),listOfNodes.get(i).getYIndex(),xAxisRange,yAxisRange);
                     }
                     for(int i=0;i<currentListSize;i++){
                         listOfNodes.remove(0);
