@@ -3,18 +3,18 @@ import java.util.*;
 
 public class Main {
 
+    private final static int COORDINATEDIMENSION = 2;
+    private final static int XAXISMIN = -10;
+    private final static int XAXISMAX = 10;
+    private final static int YAXISMIN = -10;
+    private final static int YAXISMAX = 10;
+    //assume max number of tickets for each event is 20
+    private final static int MAXNUMBEROFTICKETS = 20;
+    //assume max price of each ticket is 50 dollars
+    private final static int MAXTICKETPRICE = 50;
+
     public static void main(String[] args) {
 	// write your code here
-        final int COORDINATEDIMENSION = 2;
-        final int XAXISMIN = -10;
-        final int XAXISMAX = 10;
-        final int YAXISMIN = -10;
-        final int YAXISMAX = 10;
-        //assume max number of tickets for each event is 20
-        final int MAXNUMBEROFTICKETS = 20;
-        //assume max price of each ticket is 50 dollars
-        final int MAXTICKETPRICE = 50;
-
         Scanner sc;
         Boolean isRunning = true;
         int xCoordinate = 0;
@@ -24,45 +24,16 @@ public class Main {
         int yAxisRange = YAXISMAX - YAXISMIN + 1;
         //worldSize stores the unique numeric identifier for each event
         int[][] worldSize = new int[xAxisRange][yAxisRange];
-        //numberOfTickets stores the number of tickets for each event
-        ArrayList<Integer> numberOfTickets = new ArrayList<Integer>();
-        //ticketPrices stores individual ticket prices for each event
-        ArrayList<ArrayList<Double>> allEventsTicketPrices = new ArrayList<ArrayList<Double>>();
-        int numberOfEvents = 0;
-        Boolean isEvent;
-        Random rd = new Random();
+        ArrayList<Event> listOfEvents = new ArrayList<Event>();
 
-        //generate events in the world based on specified worldSize
-        for(int i=0;i<xAxisRange;i++){
-            for(int j=0;j<yAxisRange;j++){
-                //assume probability of an event occurring at each coordinate is 50%.
-                isEvent = rd.nextBoolean();
-                //if isEvent is true, create an event at this coordinate
-                if(isEvent) {
-                    numberOfEvents++;
-                    worldSize[i][j] = numberOfEvents;
-                }
-            }
-        }
+        GenerateEvents(xAxisRange,yAxisRange,worldSize,listOfEvents);
 
-        //generates number of tickets and individual ticket prices for each event
-        for(int i=0;i<numberOfEvents;i++){
-            numberOfTickets.add(rd.nextInt(MAXNUMBEROFTICKETS));
-            ArrayList<Double> ticketPrices = new ArrayList<Double>();
-
-            for(int j=0;j<numberOfTickets.get(i);j++){
-                //generates a random int in a 100 times larger range then divide by 100 to obtain ticket price with 2 decimal points
-                //ensures that generated ticket is at least 1 cent
-                int temp = rd.nextInt(MAXTICKETPRICE*100) + 1;
-                ticketPrices.add((double)temp/100);
-            }
-            allEventsTicketPrices.add(ticketPrices);
-        }
-
+        //assume there is at least 1 event
         //assume max tickets for each event is 20
         //assume each coordinate can hold a maximum of one event
         //assume max price of each ticket is 50 dollars
         //assume probability of each event occurring at each coordinate is 50%.
+        //check for less than 5 events
 
         while(isRunning) {
             try {
@@ -87,6 +58,29 @@ public class Main {
                 System.out.println("Invalid input.");
             } catch(Exception e){
                 e.printStackTrace(System.err);
+            }
+        }
+    }
+
+    /**
+     * generate events in the world based on specified worldSize
+     * @param xAxisRange, yAxisRange, worldSize, listOfEvents
+     */
+    private static void GenerateEvents(int xAxisRange, int yAxisRange, int[][]worldSize, ArrayList<Event> listOfEvents){
+        Boolean isEvent;
+        int eventNumber = 0;
+        Random rd = new Random();
+
+        for(int i=0;i<xAxisRange;i++){
+            for(int j=0;j<yAxisRange;j++){
+                //assume probability of an event occurring at each coordinate is 50%.
+                isEvent = rd.nextBoolean();
+                //if isEvent is true, create an event at this coordinate
+                if(isEvent) {
+                    eventNumber++;
+                    worldSize[i][j] = eventNumber;
+                    listOfEvents.add(new Event(eventNumber,MAXNUMBEROFTICKETS,MAXTICKETPRICE));
+                }
             }
         }
     }
