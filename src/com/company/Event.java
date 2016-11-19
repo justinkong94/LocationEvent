@@ -35,10 +35,8 @@ class Event {
 
     int getDistance(int inputXCoord, int inputYCoord){
         int distance = 0;
-
         distance += Math.abs(inputXCoord - xCoordinate);
         distance += Math.abs(inputYCoord - yCoordinate);
-
         return distance;
     }
 

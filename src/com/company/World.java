@@ -15,7 +15,6 @@ class World {
     private int MAXTICKETPRICE;
     private int xAxisRange;
     private int yAxisRange;
-
     private ArrayList<Event> listOfEvents;
 
     World(int xAxisRange, int yAxisRange, int XAXISMIN, int YAXISMIN, int MAXNUMBEROFTICKETS, int MAXTICKETPRICE){
@@ -35,7 +34,7 @@ class World {
         listOfEvents.add(new Event(eventNumber,XAXISMIN+currentXIndex,YAXISMIN+currentYIndex,MAXNUMBEROFTICKETS,MAXTICKETPRICE));
     }
 
-    int GetCoordinates(int xIndex, int yIndex){
+    int GetCoordinatesData(int xIndex, int yIndex){
         return world[xIndex][yIndex];
     }
 

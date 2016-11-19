@@ -14,12 +14,18 @@ public class Main {
     //assume max price of each ticket is 50 dollars
     private final static int MAXTICKETPRICE = 50;
     //probabillity of event at any coordinate in (%) percentages
-    private final static int EVENTPROBABILITY = 5;
+    private final static int EVENTPROBABILITY = 10;
 
     public static void main(String[] args) {
+        Scanner sc = null;
         Boolean isRunning = true;
         int xAxisRange = XAXISMAX - XAXISMIN + 1;
         int yAxisRange = YAXISMAX - YAXISMIN + 1;
+        int inputXCoordinate;
+        int inputYCoordinate;
+        int numberOfFoundEvents = 0;
+        int currentListSize;
+        ArrayList<Node> listOfNodes = new ArrayList<Node>();
         //world object stores the world data and all the event data
         World world = new World(xAxisRange,yAxisRange,XAXISMIN,YAXISMIN,MAXNUMBEROFTICKETS,MAXTICKETPRICE);
 
@@ -27,66 +33,57 @@ public class Main {
 
         //assume coordinates input has no spaces.
         //assume in the case that a few events have the same distance and causes list to exceed 5, events will be picked arbitrarily
-        //assume events with no tickets are still shown
+        //assume events with no tickets are still shown (checked)
         //assume coordinates are linear in distance
-        //assume there is at least 1 event
+        //assume there is at least 1 event (Checked) works with 0 events
         //assume max tickets for each event is 20
         //assume each coordinate can hold a maximum of one event
         //assume max price of each ticket is 50 dollars
-        //assume probability of each event occurring at each coordinate is 20%.
+        //assume probability of each event occurring at each coordinate is 10%.
         //check for less than 5 events (done)
         //make sure ticket prices are all 2 decimals
         //make sure event number are all 3 digits
+        //tested up to world size of 2000 X 2000
 
         //distance not in order (maybe done)
         //no repeats of search nodes (maybe done)
         //no prints of more than 5 nearby events (done)
         //check for events on same spot as user(maybe done)
         //arraylist listOfNodes out of bounds error sometimes(maybe done)
-        //isRunning never quits
+        //isRunning never quits(maybe done)
         //need to test validity of searches
 
         while(isRunning) {
             try {
-                int inputXCoordinate;
-                int inputYCoordinate;
-                int numberOfFoundEvents = 0;
-                ArrayList<Node> listOfNodes = new ArrayList<Node>();
-                Scanner sc = new Scanner(System.in);
-
+                sc = new Scanner(System.in);
                 System.out.println("Please input coordinates: (Input exit to quit)");
                 System.out.printf(">");
                 String input = sc.next();
 
                 if(input.equals("exit") || input.equals("Exit")){
                     System.out.println("Exiting...");
+                    isRunning = false;
                     break;
                 }
-                String[] inputSplit = input.split(",",2);
 
+                String[] inputSplit = input.split(",",2);
                 if(inputSplit.length != 2){
                     throw new InputException("Not a coordinate.");
                 }
-
                 inputXCoordinate = Integer.parseInt(inputSplit[0]);
                 inputYCoordinate = Integer.parseInt(inputSplit[1]);
-
                 if(inputXCoordinate < XAXISMIN || inputXCoordinate > XAXISMAX){
                     throw new InputException("Invalid coordinates.");
                 }
                 if(inputYCoordinate < YAXISMIN || inputYCoordinate > YAXISMAX){
                     throw new InputException("Invalid coordinates.");
                 }
-
                 System.out.println("\nClosest Events to (" + inputXCoordinate + "," + inputYCoordinate + "):\n");
                 //Check current coordinate for events
-                listOfNodes.add(new Node(inputXCoordinate - XAXISMIN,inputYCoordinate - YAXISMIN));
-                numberOfFoundEvents += CheckCoordinateDetails(world.GetCoordinates(inputXCoordinate - XAXISMIN,inputYCoordinate - YAXISMIN),world,inputXCoordinate,inputYCoordinate);
-                world.SetSearchedIndex(inputXCoordinate - XAXISMIN,inputYCoordinate - YAXISMIN);
+                numberOfFoundEvents += SearchNode(world,listOfNodes,inputXCoordinate,inputYCoordinate,inputXCoordinate - XAXISMIN,inputYCoordinate - YAXISMIN);
 
                 while(numberOfFoundEvents < NUMBEROFCLOSESTEVENTS){
-                    int currentListSize = listOfNodes.size();
-
+                    currentListSize = listOfNodes.size();
                     if(currentListSize <= 0){
                         break;
                     }
@@ -97,10 +94,11 @@ public class Main {
                         listOfNodes.remove(0);
                     }
                 }
-
                 System.out.println();
+                //resets all variables, arrays and Arraylists for new coordinates input
+                numberOfFoundEvents = 0;
+                listOfNodes.clear();
                 world.ClearSearchedIndex();
-
             } catch(InputException e){
                 System.out.println(e);
             } catch(NumberFormatException e){
@@ -111,10 +109,9 @@ public class Main {
             }
         }
     }
-
     /**
-     * generate events in the world based on specified worldSize
-     * @param World world, int xAxisRange, int yAxisRange
+     * Generate events in the world based on specified worldSize
+     * @param world, xAxisRange, yAxisRange
      */
     private static void GenerateEvents(World world, int xAxisRange, int yAxisRange){
         int eventGeneration;
@@ -132,39 +129,36 @@ public class Main {
             }
         }
     }
-
+    /**
+     * Searches the 4 neighbouring nodes around the input coordinate
+     * @param world, listOfNodes, inputXCoord, inputYCoord, numberOfFoundEvents, currentXIndex, currentYIndex, xAxisRange, yAxisRange
+     * @return numberOfFoundEvents
+     */
     private static int SearchNeighbours(World world, ArrayList<Node> listOfNodes, int inputXCoord, int inputYCoord, int numberOfFoundEvents, int currentXIndex, int currentYIndex, int xAxisRange, int yAxisRange){
-        int coordinateDetails;
-
         if(currentXIndex > 0 && world.GetSearchedIndex(currentXIndex-1,currentYIndex) <= 0 && numberOfFoundEvents < NUMBEROFCLOSESTEVENTS){
-            world.SetSearchedIndex(currentXIndex-1,currentYIndex);
-            listOfNodes.add(new Node(currentXIndex-1,currentYIndex));
-            coordinateDetails = world.GetCoordinates(currentXIndex-1,currentYIndex);
-            numberOfFoundEvents += CheckCoordinateDetails(coordinateDetails,world,inputXCoord,inputYCoord);
+            numberOfFoundEvents += SearchNode(world,listOfNodes,inputXCoord,inputYCoord,currentXIndex-1,currentYIndex);
         }
         if(currentYIndex < yAxisRange - 2 && world.GetSearchedIndex(currentXIndex,currentYIndex+1) <= 0 && numberOfFoundEvents < NUMBEROFCLOSESTEVENTS){
-            world.SetSearchedIndex(currentXIndex,currentYIndex+1);
-            listOfNodes.add(new Node(currentXIndex,currentYIndex+1));
-            coordinateDetails = world.GetCoordinates(currentXIndex,currentYIndex+1);
-            numberOfFoundEvents += CheckCoordinateDetails(coordinateDetails,world,inputXCoord,inputYCoord);
+            numberOfFoundEvents += SearchNode(world,listOfNodes,inputXCoord,inputYCoord,currentXIndex,currentYIndex+1);
         }
         if(currentYIndex > 0 && world.GetSearchedIndex(currentXIndex,currentYIndex-1) <= 0 && numberOfFoundEvents < NUMBEROFCLOSESTEVENTS){
-            world.SetSearchedIndex(currentXIndex,currentYIndex-1);
-            listOfNodes.add(new Node(currentXIndex,currentYIndex-1));
-            coordinateDetails = world.GetCoordinates(currentXIndex,currentYIndex-1);
-            numberOfFoundEvents += CheckCoordinateDetails(coordinateDetails,world,inputXCoord,inputYCoord);
+            numberOfFoundEvents += SearchNode(world,listOfNodes,inputXCoord,inputYCoord,currentXIndex,currentYIndex-1);
         }
         if(currentXIndex < xAxisRange - 2 && world.GetSearchedIndex(currentXIndex+1,currentYIndex) <= 0 && numberOfFoundEvents < NUMBEROFCLOSESTEVENTS){
-            world.SetSearchedIndex(currentXIndex+1,currentYIndex);
-            listOfNodes.add(new Node(currentXIndex+1,currentYIndex));
-            coordinateDetails = world.GetCoordinates(currentXIndex+1,currentYIndex);
-            numberOfFoundEvents += CheckCoordinateDetails(coordinateDetails,world,inputXCoord,inputYCoord);
+            numberOfFoundEvents += SearchNode(world,listOfNodes,inputXCoord,inputYCoord,currentXIndex+1,currentYIndex);
         }
-
         return numberOfFoundEvents;
     }
+    /**
+     * Adds a new node, search details of node and set node value to has been searched. Prints details of node if events are found at node.
+     * @param world, listOfNodes, inputXCoord, inputYCoord, xIndex, yIndex
+     * @return 1 if valid event was found, 0 if not found
+     */
+    private static int SearchNode(World world,ArrayList<Node> listOfNodes,int inputXCoord,int inputYCoord,int xIndex,int yIndex){
+        int coordinateDetails = world.GetCoordinatesData(xIndex,yIndex);
+        world.SetSearchedIndex(xIndex,yIndex);
+        listOfNodes.add(new Node(xIndex,yIndex));
 
-    private static int CheckCoordinateDetails(int coordinateDetails,World world,int inputXCoord,int inputYCoord){
         if(coordinateDetails > 0){
             printEventDetails(world.GetEvent(coordinateDetails),inputXCoord,inputYCoord);
             return 1;
@@ -172,10 +166,12 @@ public class Main {
             return 0;
         }
     }
-
+    /**
+     * Print details of events(event number,cheapest ticket price,distance of event from input coordinate)
+     * @param currentEvent, inputXCoord, inputYCoord
+     */
     private static void printEventDetails(Event currentEvent, int inputXCoord, int inputYCoord){
         double cheapestTicket = currentEvent.getCheapestTicket();
-
         if(cheapestTicket > 0){
             System.out.printf("Event %03d - $%.2f, Distance %d\n",currentEvent.getEventNumber(),cheapestTicket,currentEvent.getDistance(inputXCoord,inputYCoord));
         }else{

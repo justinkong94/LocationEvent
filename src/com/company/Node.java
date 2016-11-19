@@ -16,7 +16,5 @@ class Node {
         return xIndex;
     }
 
-    int getYIndex(){
-        return yIndex;
-    }
+    int getYIndex(){ return yIndex; }
 }
