@@ -19,7 +19,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.5-b02, mixed mode)
 
 Once JDK is installed and configured, download this project and compile the Java package on Windows command line:
 ```
-Command : C:\..\LocationEvent\src\com\company > javac src/com/company/*.java
+Command : C:\..\LocationEvent > javac src/com/company/*.java
 ```
 
 After compilation, run the Java package on Windows command line:
