@@ -4,7 +4,7 @@ Inputs a pair of coordinates and returns a list of five closest events with chea
 ## Build and Run Instructions
 1. Download Java JDK from here: http://www.oracle.com/technetwork/java/javase/downloads/index.html
 2. Install Java JDK
-3. Edit the PATH environment variable. In Windows 7/8/10:
+3. Edit the PATH environment variable. In Windows 10:
   * Launch "Control Panel" ⇒ "System" ⇒ Click "Advanced system settings".
   * Switch to "Advanced" tab ⇒ "Environment Variables".
   * Under "System Variables", scroll down to select "Path" ⇒ "Edit...".
