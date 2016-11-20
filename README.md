@@ -49,4 +49,10 @@ Program is tested up to world size of 2000 X 2000.
 ### How would you change your program if you were working with a much larger world size?
 > With a large world size, using a 2D array to store Event objects would be impractical due to the huge memory space required to create and store the 2D array. I would use a HashMap to store the Event objects with the key being a Node object which will store the x and y coordinates. To search for events, I would use the neighbouring coordinates from the input coordinates to iteratively search the HashMap for valid Events.
 
-        
+## Extra Notes
+These values can be easily changed in the program to suit any scenario: 
+  1. Maximum ticket amount for each event
+  2. Maximum price of each ticket
+  3. Probability of each event occuring at any location
+  4. World size constraints (x and y axis)
+  5. Number of closest events to display to the user
