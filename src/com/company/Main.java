@@ -135,6 +135,7 @@ public class Main {
      * @return numberOfFoundEvents
      */
     private static int SearchNeighbours(World world, ArrayList<Node> listOfNodes, int inputXCoord, int inputYCoord, int numberOfFoundEvents, int currentXIndex, int currentYIndex, int xAxisRange, int yAxisRange){
+        //check if neighbour node is at world boundary, check if neighbour node has been visited and if the maximum numberOfFoundEvents has been reached
         if(currentXIndex > 0 && world.GetSearchedIndex(currentXIndex-1,currentYIndex) <= 0 && numberOfFoundEvents < NUMBEROFCLOSESTEVENTS){
             numberOfFoundEvents += SearchNode(world,listOfNodes,inputXCoord,inputYCoord,currentXIndex-1,currentYIndex);
         }
