@@ -31,28 +31,6 @@ public class Main {
 
         GenerateEvents(world,xAxisRange,yAxisRange);
 
-        //assume coordinates input has no spaces.
-        //assume in the case that a few events have the same distance and causes list to exceed 5, events will be picked arbitrarily
-        //assume events with no tickets are still shown (checked)
-        //assume coordinates are linear in distance
-        //assume there is at least 1 event (Checked) works with 0 events
-        //assume max tickets for each event is 20
-        //assume each coordinate can hold a maximum of one event
-        //assume max price of each ticket is 50 dollars
-        //assume probability of each event occurring at each coordinate is 10%.
-        //check for less than 5 events (done)
-        //make sure ticket prices are all 2 decimals
-        //make sure event number are all 3 digits
-        //tested up to world size of 2000 X 2000
-
-        //distance not in order (maybe done)
-        //no repeats of search nodes (maybe done)
-        //no prints of more than 5 nearby events (done)
-        //check for events on same spot as user(maybe done)
-        //arraylist listOfNodes out of bounds error sometimes(maybe done)
-        //isRunning never quits(maybe done)
-        //need to test validity of searches
-
         while(isRunning) {
             try {
                 sc = new Scanner(System.in);
@@ -65,7 +43,6 @@ public class Main {
                     isRunning = false;
                     break;
                 }
-
                 String[] inputSplit = input.split(",",2);
                 if(inputSplit.length != 2){
                     throw new InputException("Not a coordinate.");
@@ -81,7 +58,6 @@ public class Main {
                 System.out.println("\nClosest Events to (" + inputXCoordinate + "," + inputYCoordinate + "):\n");
                 //Check current coordinate for events
                 numberOfFoundEvents += SearchNode(world,listOfNodes,inputXCoordinate,inputYCoordinate,inputXCoordinate - XAXISMIN,inputYCoordinate - YAXISMIN);
-
                 while(numberOfFoundEvents < NUMBEROFCLOSESTEVENTS){
                     currentListSize = listOfNodes.size();
                     if(currentListSize <= 0){
