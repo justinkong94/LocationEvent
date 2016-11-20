@@ -42,10 +42,11 @@ This should execute the Java program.
 ## Testing
 Program is tested up to world size of 2000 X 2000.
 
+## Additional Questions
 ### How might you change your program if you needed to support multiple events at the same location?
-
+> Create a new object called EventContainer. The listOfEvents Array List will be modified to contain EventContainer objects. The EventContainer object will contain a list of Event objects happening at that specific location. This way, all events happening at a specific location can be found by referencing the EventContainer object tied to that location.
 
 ### How would you change your program if you were working with a much larger world size?
-
+> With a large world size, using a 2D array to store Event objects would be impractical due to the huge memory space required to create and store the 2D array. I would use a HashMap to store the Event objects with the key being a Node object which will store the x and y coordinates. To search for events, I would use the neighbouring coordinates from the input coordinates to iteratively search the HashMap for valid Events.
 
         
