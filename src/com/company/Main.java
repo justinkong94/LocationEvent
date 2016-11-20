@@ -44,6 +44,7 @@ public class Main {
                     break;
                 }
                 String[] inputSplit = input.split(",",2);
+
                 if(inputSplit.length != 2){
                     throw new InputException("Not a coordinate.");
                 }
@@ -58,6 +59,7 @@ public class Main {
                 System.out.println("\nClosest Events to (" + inputXCoordinate + "," + inputYCoordinate + "):\n");
                 //Check current coordinate for events
                 numberOfFoundEvents += SearchNode(world,listOfNodes,inputXCoordinate,inputYCoordinate,inputXCoordinate - XAXISMIN,inputYCoordinate - YAXISMIN);
+
                 while(numberOfFoundEvents < NUMBEROFCLOSESTEVENTS){
                     currentListSize = listOfNodes.size();
                     if(currentListSize <= 0){
